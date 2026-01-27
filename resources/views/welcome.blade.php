@@ -144,8 +144,20 @@
                     <div
                         class="group bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-2xl hover:border-indigo-100 transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full">
                         <div class="relative h-64 overflow-hidden">
-                            {{-- Placeholder image if no images yet --}}
-                            <img src="{{ asset('images/room-placeholder.jpg') }}" alt="{{ $room->name }}"
+                            @php
+                                $primaryImage = $room->images->where('is_primary', true)->first() ?? $room->images->first();
+                                if ($primaryImage) {
+                                    if (Str::startsWith($primaryImage->image_path, 'storage/')) {
+                                        $imageSrc = asset($primaryImage->image_path);
+                                    } else {
+                                        $imageSrc = asset('storage/' . $primaryImage->image_path);
+                                    }
+                                } else {
+                                    $imageSrc = 'https://placehold.co/600x400?text=No+Image';
+                                }
+                            @endphp
+                            <img src="{{ $imageSrc }}" alt="{{ $room->name }}"
+                                onerror="this.src='https://placehold.co/600x400?text=Error+Loading+Image'"
                                 class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
                             <div
                                 class="absolute top-4 right-4 px-4 py-1.5 rounded-full font-bold text-sm shadow-sm {{ $room->status == 'available' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700' }}">

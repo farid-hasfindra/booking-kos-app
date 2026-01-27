@@ -57,7 +57,7 @@ class RoomController extends Controller
             $path = $request->file('image')->store('rooms', 'public');
             RoomImage::create([
                 'room_id' => $room->id,
-                'image_path' => 'storage/' . $path, // Assuming 'public' disk link
+                'image_path' => $path,
                 'is_primary' => true,
             ]);
         }
@@ -107,7 +107,7 @@ class RoomController extends Controller
             $path = $request->file('image')->store('rooms', 'public');
             RoomImage::create([
                 'room_id' => $room->id,
-                'image_path' => 'storage/' . $path,
+                'image_path' => $path,
                 'is_primary' => true,
             ]);
         }

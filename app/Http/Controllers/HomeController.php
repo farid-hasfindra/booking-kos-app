@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $rooms = Room::orderBy('status', 'asc')->latest()->get();
+        $rooms = Room::with('images')->orderBy('status', 'asc')->latest()->get();
         $landingInfos = \App\Models\LandingInfo::all();
         // If empty (e.g. seed didn't run), fallback or let view handle empty collection
         return view('welcome', compact('rooms', 'landingInfos'));
